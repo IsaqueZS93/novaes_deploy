@@ -1,0 +1,198 @@
+/* Geral */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cabeçalhos */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin: 10px 0;
+    color: #00509e;
+    transition: color 0.3s ease;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2em;
+    text-align: center;
+}
+
+/* Botões */
+button {
+    background-color: #00509e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #003f7f;
+    transform: scale(1.05);
+}
+
+/* Inputs */
+input[type="text"], input[type="number"], input[type="email"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #00509e;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Upload */
+.dcc-upload {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px dashed #00509e;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #e3f2fd;
+    color: #00509e;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dcc-upload:hover {
+    background-color: #d1e8fb;
+    color: #003f7f;
+}
+
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th, table td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #00509e;
+    color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:hover {
+    background-color: #d1e8fb;
+}
+
+/* Gráficos */
+.graph {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #00509e;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+/* Cartões de Métrica */
+.card {
+    background-color: #e3f2fd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card h4 {
+    color: #00509e;
+}
+
+.card p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Mensagens de erro */
+.error {
+    color: #ff4d4f;
+    border: 1px solid #ff4d4f;
+    background-color: #fff1f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+    color: #1e90ff;
+}
+
+body.dark-mode table th {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.dark-mode button {
+    background-color: #1e90ff;
+    color: white;
+}
+
+body.dark-mode input[type="text"], body.dark-mode textarea {
+    background-color: #1e1e1e;
+    color: white;
+    border-color: #333;
+}
+
+/* Layout Responsivo */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .card {
+        margin: 10px auto;
+    }
+
+    .dcc-upload {
+        width: 100%;
+    }
+}

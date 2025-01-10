@@ -1,0 +1,21 @@
+# Caminho base para o dataset
+path: C:/Users/Novaes Engenharia/WebAppStreamlit/IA_easels/IAE_data
+
+# Subdiretórios para imagens de treinamento e validação
+train: IAE_train
+val: IAE_validation
+
+# Número total de classes no dataset
+nc: 9  # Total de classes no dataset
+
+# Classes do dataset
+names:
+  0: lacre_azul
+  1: lacre_vermelho
+  2: hidrômetro_novo
+  3: hidrômetro_velho
+  4: hidrômetro_enterrado
+  5: calçada_danificada
+  6: calçada_ok
+  7: muro_danificado
+  8: entulhos
