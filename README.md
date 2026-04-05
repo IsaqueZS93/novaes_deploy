@@ -99,3 +99,8 @@
 - Módulo de anexos por entidade com storage desacoplado
 - Histórico automatizado via sinais de domínio
 - API REST para integração mobile/BI
+
+
+## 9) Empacotamento para download
+- Gerar pacote: `bash scripts/package_release.sh`
+- Saída: `dist/novaes_ops_corporativo.tar.gz`
