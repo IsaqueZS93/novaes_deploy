@@ -211,3 +211,6 @@ xyzservices==2024.9.0
 yarl==1.18.3
 youtube-transcript-api==0.6.2
 zipp==3.21.0
+
+Django==5.0.6
+django-filter==24.2
