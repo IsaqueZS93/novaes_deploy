@@ -1,22 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3>Dashboard executivo</h3>
-<div class="row g-3">
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Contratos ativos</small><h4>{{ kpis.active_contracts }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Planejado</small><h4>{{ kpis.planned_total }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Executado</small><h4>{{ kpis.executed_total }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Aderência (%)</small><h4>{{ kpis.adherence|floatformat:1 }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Receita prevista</small><h4>{{ kpis.expected_revenue }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Receita realizada</small><h4>{{ kpis.received_revenue }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Custos</small><h4>{{ kpis.total_cost }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Lucro</small><h4>{{ kpis.profit }}</h4></div></div></div>
-  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Margem %</small><h4>{{ kpis.margin|floatformat:1 }}</h4></div></div></div>
+<div class="card card-premium mb-3">
+  <div class="card-body">
+    <h4 class="mb-3">Dashboard gerencial</h4>
+    <form class="row g-2">
+      {% for field in filter_form %}
+      <div class="col-md-2">{{ field.label_tag }} {{ field }}</div>
+      {% endfor %}
+      <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-primary w-100">Atualizar</button></div>
+    </form>
+  </div>
 </div>
-<div class="card mt-4"><div class="card-body"><canvas id="finChart"></canvas></div></div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Contratos Ativos</small><h4>{{ kpis.active_contracts }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Planejado</small><h4>{{ kpis.planned_total }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Executado</small><h4>{{ kpis.executed_total }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Aderência</small><h4>{{ kpis.adherence|floatformat:1 }}%</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Receita Prevista</small><h4>R$ {{ kpis.expected_revenue }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Receita Realizada</small><h4>R$ {{ kpis.received_revenue }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Custos</small><h4>R$ {{ kpis.total_cost }}</h4></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Lucro / Margem</small><h4>R$ {{ kpis.profit }} ({{ kpis.margin|floatformat:1 }}%)</h4></div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6"><div class="card card-premium"><div class="card-body"><h6>Evolução Mensal (Receita x Custo)</h6><canvas id="trendChart"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="card card-premium"><div class="card-body"><h6>Receita por Contrato</h6><canvas id="revenueContractChart"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="card card-premium"><div class="card-body"><h6>Custos por Categoria</h6><canvas id="costCategoryChart"></canvas></div></div></div>
+</div>
+
 <script>
-new Chart(document.getElementById('finChart'),{
-  type:'bar',
-  data:{labels:['Receita','Custo','Lucro'],datasets:[{data:[{{kpis.received_revenue|default:0}},{{kpis.total_cost|default:0}},{{kpis.profit|default:0}}],backgroundColor:['#0d6efd','#dc3545','#198754']}]} 
-})
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {labels: {{ trend_labels|safe }}, datasets: [
+      {label: 'Receita', data: {{ trend_revenue|safe }}, borderColor: '#198754'},
+      {label: 'Custo', data: {{ trend_cost|safe }}, borderColor: '#dc3545'}
+  ]}
+});
+new Chart(document.getElementById('revenueContractChart'), {
+  type: 'bar',
+  data: {labels: {{ revenue_contract_labels|safe }}, datasets: [{label: 'Receita', data: {{ revenue_contract_values|safe }}, backgroundColor: '#0d6efd'}]}
+});
+new Chart(document.getElementById('costCategoryChart'), {
+  type: 'doughnut',
+  data: {labels: {{ cost_category_labels|safe }}, datasets: [{data: {{ cost_category_values|safe }}}]}
+});
 </script>
 {% endblock %}

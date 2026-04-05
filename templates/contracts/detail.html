@@ -1,1 +1,58 @@
-{% extends 'base.html' %}{% block content %}<h3>{{ contract.name }}</h3><p><b>Cliente:</b> {{ contract.client }} | <b>Período:</b> {{ contract.start_date }} até {{ contract.end_date }}</p><ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active">Serviços</a></li></ul><div class="mt-3"><a href="{% url 'contracts_services_create' contract.id %}" class="btn btn-sm btn-primary mb-2">Adicionar serviço</a><table class="table"><tr><th>Serviço</th><th>Tipo cobrança</th><th>Qtd. contratada</th></tr>{% for s in services %}<tr><td>{{ s.name }}</td><td>{{ s.get_billing_type_display }}</td><td>{{ s.contracted_quantity }}</td></tr>{% empty %}<tr><td colspan="3">Sem serviços cadastrados.</td></tr>{% endfor %}</table></div>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="card card-premium mb-3">
+  <div class="card-body d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <div>
+      <h4 class="mb-1">{{ contract.name }}</h4>
+      <div class="text-muted">{{ contract.number }} · {{ contract.client }} · {{ contract.start_date }} a {{ contract.end_date }}</div>
+    </div>
+    <a href="{% url 'contracts_services_create' contract.id %}" class="btn btn-primary">Adicionar serviço</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Planejado</small><h5>{{ summary.planned_qty }}</h5></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Executado</small><h5>{{ summary.executed_qty }}</h5></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Receita recebida</small><h5>R$ {{ summary.revenue_received }}</h5></div></div></div>
+  <div class="col-md-3"><div class="card kpi"><div class="card-body"><small>Margem</small><h5>{{ summary.margin|floatformat:1 }}%</h5></div></div></div>
+</div>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item"><a class="nav-link {% if tab == 'resumo' %}active{% endif %}" href="?tab=resumo">Resumo</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'servicos' %}active{% endif %}" href="?tab=servicos">Serviços</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'cronograma' %}active{% endif %}" href="?tab=cronograma">Cronograma</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'execucao' %}active{% endif %}" href="?tab=execucao">Execução</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'custos' %}active{% endif %}" href="?tab=custos">Custos</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'receitas' %}active{% endif %}" href="?tab=receitas">Receitas</a></li>
+</ul>
+
+<div class="table-card">
+  {% if tab == 'resumo' %}
+    <h6>Resumo executivo do contrato</h6>
+    <p class="mb-1"><b>Objeto:</b> {{ contract.object }}</p>
+    <p class="mb-1"><b>Aderência planejado x executado:</b> {{ summary.adherence|floatformat:1 }}%</p>
+    <p class="mb-1"><b>Receita esperada:</b> R$ {{ summary.revenue_expected }}</p>
+    <p class="mb-0"><b>Custo total:</b> R$ {{ summary.cost_total }} · <b>Lucro:</b> R$ {{ summary.profit }}</p>
+  {% elif tab == 'servicos' %}
+    <table class="table"><thead><tr><th>Serviço</th><th>Tipo cobrança</th><th>Qtd contratada</th><th>Valor unitário</th></tr></thead><tbody>
+      {% for s in services %}<tr><td>{{ s.name }}</td><td>{{ s.get_billing_type_display }}</td><td>{{ s.contracted_quantity }}</td><td>{{ s.unit_value }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% elif tab == 'cronograma' %}
+    <table class="table"><thead><tr><th>Data</th><th>Serviço</th><th>Equipe</th><th>Local</th><th>Qtd</th><th>Status</th></tr></thead><tbody>
+      {% for p in planning_rows %}<tr><td>{{ p.planned_date }}</td><td>{{ p.service.name }}</td><td>{{ p.team }}</td><td>{{ p.location }}</td><td>{{ p.planned_quantity }}</td><td>{{ p.get_status_display }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% elif tab == 'execucao' %}
+    <table class="table"><thead><tr><th>Data</th><th>Serviço</th><th>Equipe</th><th>Qtd</th><th>Valor real</th></tr></thead><tbody>
+      {% for e in execution_rows %}<tr><td>{{ e.execution_date }}</td><td>{{ e.service.name }}</td><td>{{ e.team }}</td><td>{{ e.executed_quantity }}</td><td>{{ e.actual_value }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% elif tab == 'custos' %}
+    <table class="table"><thead><tr><th>Data</th><th>Categoria</th><th>Serviço</th><th>Valor</th></tr></thead><tbody>
+      {% for c in cost_rows %}<tr><td>{{ c.launch_date }}</td><td>{{ c.category }}</td><td>{{ c.service }}</td><td>{{ c.value }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% elif tab == 'receitas' %}
+    <table class="table"><thead><tr><th>Data</th><th>Origem</th><th>Status</th><th>Faturado</th><th>Recebido</th></tr></thead><tbody>
+      {% for r in revenue_rows %}<tr><td>{{ r.launch_date }}</td><td>{{ r.origin }}</td><td>{{ r.get_status_display }}</td><td>{{ r.billed_value }}</td><td>{{ r.received_value }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% endif %}
+</div>
+{% endblock %}

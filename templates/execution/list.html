@@ -1,1 +1,35 @@
-{% extends 'base.html' %}{% block content %}<div class="d-flex justify-content-between"><h4>Execução diária</h4><a href="{% url 'execution_create' %}" class="btn btn-primary">Novo lançamento</a></div><table class="table"><tr><th>Data</th><th>Contrato</th><th>Serviço</th><th>Equipe</th><th>Qtd.</th><th>Valor real</th></tr>{% for r in rows %}<tr><td>{{ r.execution_date }}</td><td>{{ r.contract.number }}</td><td>{{ r.service.name }}</td><td>{{ r.team }}</td><td>{{ r.executed_quantity }}</td><td>{{ r.actual_value }}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="card card-premium mb-3"><div class="card-body d-flex justify-content-between"><div><h4 class="mb-1">Diário operacional</h4><small class="text-muted">Apontamento diário detalhado com filtros gerenciais.</small></div><a href="{% url 'execution_create' %}" class="btn btn-primary">Novo lançamento</a></div></div>
+
+<div class="table-card mb-3">
+  <form class="row g-2">
+    {% for field in filter_form %}
+      <div class="col-md-2">{{ field.label_tag }} {{ field }}</div>
+    {% endfor %}
+    <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-primary w-100">Filtrar</button></div>
+  </form>
+</div>
+
+<div class="table-card">
+  <table class="table align-middle">
+    <thead><tr><th>Data</th><th>Contrato</th><th>Serviço</th><th>Equipe</th><th>Localidade</th><th>Planejado</th><th>Executado</th><th>Valor previsto</th><th>Valor realizado</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.execution_date }}</td>
+        <td>{{ r.contract.number }}</td>
+        <td>{{ r.service.name }}</td>
+        <td>{{ r.team }}</td>
+        <td>{{ r.location }}</td>
+        <td>{{ r.planning.planned_quantity|default:'-' }}</td>
+        <td>{{ r.executed_quantity }}</td>
+        <td>{{ r.expected_value }}</td>
+        <td>{{ r.actual_value }}</td>
+        <td>{{ r.get_status_display }}</td>
+      </tr>
+      {% empty %}<tr><td colspan="10" class="text-center text-muted">Nenhum lançamento encontrado.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,1 +1,5 @@
-{% extends 'base.html' %}{% block content %}<div class="d-flex justify-content-between"><h4>Equipes</h4><a href="{% url 'teams_create' %}" class="btn btn-primary">Nova equipe</a></div><table class="table"><tr><th>Equipe</th><th>Líder</th><th>Tipo</th></tr>{% for t in teams %}<tr><td>{{ t.name }}</td><td>{{ t.leader }}</td><td>{{ t.operation_type }}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="card card-premium mb-3"><div class="card-body d-flex justify-content-between"><div><h4 class="mb-1">Equipes</h4><small class="text-muted">Estrutura operacional de campo para planejamento e execução.</small></div><a href="{% url 'teams_create' %}" class="btn btn-primary">Nova equipe</a></div></div>
+<div class="table-card"><table class="table"><thead><tr><th>Equipe</th><th>Líder</th><th>Tipo</th><th>Contato</th></tr></thead><tbody>{% for t in teams %}<tr><td>{{ t.name }}</td><td>{{ t.leader }}</td><td>{{ t.operation_type }}</td><td>{{ t.contact }}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

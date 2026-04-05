@@ -1,1 +1,10 @@
-{% extends 'base.html' %}{% block content %}<h4>Relatórios operacionais</h4><a href="{% url 'reports_print' %}" class="btn btn-outline-primary btn-sm mb-3">Impressão</a><table class="table"><tr><th>Data</th><th>Contrato</th><th>Serviço</th><th>Equipe</th><th>Qtd</th><th>Valor</th></tr>{% for r in rows %}<tr><td>{{ r.execution_date }}</td><td>{{ r.contract.number }}</td><td>{{ r.service.name }}</td><td>{{ r.team }}</td><td>{{ r.executed_quantity }}</td><td>{{ r.actual_value }}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="card card-premium mb-3"><div class="card-body d-flex justify-content-between"><div><h4 class="mb-1">Relatórios operacionais</h4><small class="text-muted">Visão analítica da execução diária.</small></div><a href="{% url 'reports_export_csv' %}" class="btn btn-outline-primary">Exportar CSV</a></div></div>
+<div class="table-card">
+<table class="table">
+  <thead><tr><th>Data</th><th>Contrato</th><th>Serviço</th><th>Equipe</th><th>Local</th><th>Qtd</th><th>Valor</th></tr></thead>
+  <tbody>{% for r in rows %}<tr><td>{{ r.execution_date }}</td><td>{{ r.contract.number }}</td><td>{{ r.service.name }}</td><td>{{ r.team }}</td><td>{{ r.location }}</td><td>{{ r.executed_quantity }}</td><td>{{ r.actual_value }}</td></tr>{% endfor %}</tbody>
+</table>
+</div>
+{% endblock %}
