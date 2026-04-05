@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Dashboard executivo</h3>
+<div class="row g-3">
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Contratos ativos</small><h4>{{ kpis.active_contracts }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Planejado</small><h4>{{ kpis.planned_total }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Executado</small><h4>{{ kpis.executed_total }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Aderência (%)</small><h4>{{ kpis.adherence|floatformat:1 }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Receita prevista</small><h4>{{ kpis.expected_revenue }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Receita realizada</small><h4>{{ kpis.received_revenue }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Custos</small><h4>{{ kpis.total_cost }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Lucro</small><h4>{{ kpis.profit }}</h4></div></div></div>
+  <div class="col-md-4"><div class="card kpi"><div class="card-body"><small>Margem %</small><h4>{{ kpis.margin|floatformat:1 }}</h4></div></div></div>
+</div>
+<div class="card mt-4"><div class="card-body"><canvas id="finChart"></canvas></div></div>
+<script>
+new Chart(document.getElementById('finChart'),{
+  type:'bar',
+  data:{labels:['Receita','Custo','Lucro'],datasets:[{data:[{{kpis.received_revenue|default:0}},{{kpis.total_cost|default:0}},{{kpis.profit|default:0}}],backgroundColor:['#0d6efd','#dc3545','#198754']}]} 
+})
+</script>
+{% endblock %}
